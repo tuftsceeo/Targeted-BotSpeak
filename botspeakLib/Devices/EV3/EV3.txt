@@ -9,8 +9,6 @@ ComType = HTTP         // Serial or TCPIP or ROSBridge
 SerialCom = NA   // 9600 baud, 8 data bits, 1 stop bit, no parity (0=none, 1 = odd, 2=even)
 Port = 2012              // not used in serial
 DefaultAddress = 192.168.2.3    // default IP address or search for connected devices 
-Username = root
-Password = r00tme 
 
 StartupWait = 1       // wait in msec after initialization and before writing    
 Patience = 5000         // wait in msec before giving up on a read
