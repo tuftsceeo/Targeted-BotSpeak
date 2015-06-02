@@ -198,9 +198,14 @@ int ExecuteCommand(int ptr,int s) { //ptr is the code index, s indicates script 
     case '%': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] = VARS[A] % B;
     case '&': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] &= B;
     case '|': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] |= B;
-    case '~': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] = !B;    
-    case '<': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] <<= B;
-    case '>': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] >>= B;
+    case '~': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] = VARS[A] != B;    
+    case 'l': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] <<= B;
+    case 'r': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] >>= B;
+    case 'E': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] = VARS[A] == B;
+    case '<': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] = VARS[A] < B;
+    case '>': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] = VARS[A] > B;
+    case 'L': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] = VARS[A] <= B;
+    case '^': Reply.concat(A); Reply.concat(':'); Reply.concat((B=Retrieve(ptr+3,s)));     return VARS[A] = VARS[A] >= B;   
     case 'g': Jump = ptr + 3;                                                        return A; //get a value, in this case only one operand, so set Jump appropriately
     case 'W': Jump = ptr + 3;                                    delay(A);           return A; //wait in milliseconds
     case 'w': Jump = ptr + 3;                        delayMicroseconds(A);           return A; //wait in microseconds
@@ -378,4 +383,3 @@ int SystemCall(int ptr,int s)  { //this is a hook for implementing custom functi
   Reply.concat(" "); Reply.concat(Jump);         // what gets returned in debug mode
   return ampl*freq;                           // what gets returned in direct mode
 }
-

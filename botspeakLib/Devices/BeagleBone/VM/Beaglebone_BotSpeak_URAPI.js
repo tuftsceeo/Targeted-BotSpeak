@@ -48,30 +48,32 @@ function RunBotSpeak (command,socket) {
     var TotalSize = BotCode.length;
     var reply = "";
     var scripting = -1, ptr = 0,i,j;
+    var i = 0;
     
     function RunScript (debug){
-	j = Number(Retrieve(BotCode[i].slice(BotCode[i].indexOf(' '))));
-	VARS["END"] = SCRIPT.length - 1;
-    	if(j <= VARS["END"]) setTimeout(runExecuteCommand, 0);
+		j = Number(Retrieve(BotCode[i].slice(BotCode[i].indexOf(' '))));
+		VARS["END"] = SCRIPT.length - 1;
+    	if (j <= VARS["END"]) setTimeout(runExecuteCommand, 0);
 		function runExecuteCommand() {
 			var reply1 = ExecuteCommand(SCRIPT[j]);
+			console.log(SCRIPT[j] + ' -> '+ reply1 + '\n');
 			if (debug && (command !== 'RUN')) {
 			    socket.emit('message',(SCRIPT[j] + ' -> '+ reply1 + '\n'));
-			    console.log(SCRIPT[j] + ' -> '+ reply1 + '\n');
 			}
 			var goto = String(reply1).split(' ');
 			j = (goto[0] == "GOTO") ? Number(goto[1]): j + 1;
 			
-    			if(j <= VARS["END"]) {
-    				setTimeout(runExecuteCommand, 0);
-    			} else {
-        			if (debug) reply += "ran " + (Number(VARS["END"]) + 1) + " lines of script\nDone";
-        			if (debug) { if (command == 'RUN') reply = '';}
-        	    		socket.emit('message',reply);
-    			}
+    		if (j <= VARS["END"]) {
+    		    var secs = (goto[0] == "WAIT") ? Number(goto[1]) : 0; 
+    			setTimeout(runExecuteCommand, secs);
+    		} else {
+        		if (debug) reply += "ran " + (Number(VARS["END"]) + 1) + " lines of script\nDone";
+        		if (debug) { if (command == 'RUN') reply = '';}
+        		socket.emit('message',reply);
+    		}
 		}
 	}
-
+	
     for (i = 0;i < TotalSize; i++) {
         //        console.log(GetCommand(BotCode[i]));
         switch (GetCommand(BotCode[i])) {
@@ -91,7 +93,6 @@ function RunBotSpeak (command,socket) {
                 break;
                 
             case "RUN": // run the script without debugging
-                socket.write('\r\n');
                 RunScript(false);
 				break;
 
@@ -126,18 +127,23 @@ function ExecuteCommand(Code) {
     switch (command) {
         case "SET": return Assign(dest,Retrieve(value));		//set value
         case "GET": return Retrieve(dest);		//get value
-        case "WAIT": waittime = 1000*Retrieve(dest); return delay(waittime);		//wait in milliseconds; BotSpeak sends wait in seconds
-        case "WAITµs": microdelay(Retrieve(dest)); return Retrieve(dest);		//wait in microseconds
+        case "WAIT": waittime = Retrieve(dest); return "WAIT " + waittime;		//wait in milliseconds; BotSpeak sends wait in seconds
+        case "WAITµs": waittime = Retrieve(dest)/1000; return "WAIT " + waittime;		//wait in microseconds
         case "ADD": return VARS[dest] += Retrieve(value); 
         case "SUB": return VARS[dest] -= Retrieve(value);
         case "MUL": return VARS[dest] *= Retrieve(value);
         case "DIV": return VARS[dest] /= Retrieve(value);
         case "AND": return VARS[dest] &= Retrieve(value);
         case "OR":  return VARS[dest] |= Retrieve(value);
-        case "NOT": return VARS[dest] != Retrieve(value);
+        case "NOT": return VARS[dest] = (VARS[dest] != Retrieve(value));
         case "BSL": return VARS[dest] <<= Retrieve(value);
         case "BSR": return VARS[dest] >>= Retrieve(value);
         case "MOD": return VARS[dest] %= Retrieve(value);
+        case "EQL": return VARS[dest] = (VARS[dest] == Retrieve(value));
+        case "GRT": return VARS[dest] = (VARS[dest] > Retrieve(value));
+        case "GRE": return VARS[dest] = (VARS[dest] >= Retrieve(value));
+        case "LET": return VARS[dest] = (VARS[dest] < Retrieve(value));
+        case "LEE": return VARS[dest] = (VARS[dest] >= Retrieve(value));
         case "GOTO":return Jump = command + ' ' + dest;		//used in loops for the most part
         case "LBL": return 0;		//not sure what this is supposed to do; website says it "Stores the current script line into the variable Jump (so you can use IF 1 GOTO Jump)"
         case "IF": {
