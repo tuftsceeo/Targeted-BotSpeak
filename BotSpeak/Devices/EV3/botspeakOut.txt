@@ -1,0 +1,1 @@
+SCRIPT&SET local2,10&SET var1,local2&SUB var1, 1&SET local3,var1&SET local1,0&// LBL0&SET DIO[0],1&SET var0, 1.000000&MUL var0, 1000&WAIT var0&SET DIO[0],0&IF (local1 >= local3) GOTO 16&SET var2,local1&ADD var2, 1&SET local1,var2&GOTO 5&// LBL1&ENDSCRIPT&RUN 0
