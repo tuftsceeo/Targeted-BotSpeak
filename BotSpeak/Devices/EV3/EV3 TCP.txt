@@ -1,0 +1,29 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 BotSpeak Spec File\
+\
+Hardware = EV3 TCP\
+HardwareWebAddress = http://lego.com  \
+HelpText = This lets you talk to the EV3 over BotSpeak   //Help menu section\
+\
+Translation = None       //reduces code down to Byte Code for very small processors\
+ComType = TCPIP         // Serial or TCPIP or ROSBridge\
+SerialCom = NA   // 9600 baud, 8 data bits, 1 stop bit, no parity (0=none, 1 = odd, 2=even)\
+Port = 2012              // not used in serial\
+DefaultAddress = 192.168.2.3    // default IP address or search for connected devices \
+Username = root\
+Password = r00tme \
+\
+StartupWait = 1       // wait in msec after initialization and before writing    \
+Patience = 5000         // wait in msec before giving up on a read\
+StartupPatience = 100    // wait in msec before giving up on a read - ONLY on startup\
+Retries = 3              // number of retries before giving up\
+\
+VariableDataType = FLOAT   //variable format - INT, FLOAT, FIXED\
+\
+MaxScriptSize = 5000     // Max Script Size\
+MaxVarNumber = 1000       // Maximum number of variables}
