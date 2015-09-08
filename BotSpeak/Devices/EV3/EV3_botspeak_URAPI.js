@@ -58,10 +58,11 @@ function RunBotSpeak (command,socket) {
 			    console.log(SCRIPT[j] + ' -> '+ reply1 + '\n');
 //			}
 			var goto = String(reply1).split(' ');
+            var timeDelay = (goto[0] == "WAIT") ? Number(goto[1]): 0;
 			j = (goto[0] == "GOTO") ? Number(goto[1]): j + 1;
 			
     			if(j <= VARS["END"]) {
-    				setTimeout(runExecuteCommand, 0);
+    				setTimeout(runExecuteCommand, timeDelay);
     			} else {
         			if (debug) reply += "ran " + (Number(VARS["END"]) + 1) + " lines of script\nDone";
         			if (debug) { if (command == 'RUN') reply = '';}
@@ -365,7 +366,7 @@ function getMotors(){
             var motorRead = fs.readFileSync(motorPort, "utf8");
             MOTORS[motorRead[3]] = existingMotors[i];
         }
-        catch(e){console.log("no motors")}
+        catch(e){}
     }
     return MOTORS;
 }
