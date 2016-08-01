@@ -2,7 +2,7 @@ BotSpeak is a robotics programming language designed to bridge the gap
 between small embedded systems such as the Raspberry Pi, BeagleBone, and Arduino.
 
 Below are directions on how to setup the BotSpeak interpreter as well as grammar
-rules and coding examples. See https://sites.google.com/site/botspeak/ for more info.
+rules and coding examples. See https://botspeak.org/ for more info.
 
 To get the BotSpeak interpreter working on a Raspberry Pi you need the Parsimonious Parser
 installed on your Raspberry Pi. The Parsimonious parser is included in this repository, or
